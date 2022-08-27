@@ -5,6 +5,7 @@ import Main from "./components/Main";
 import React, { useEffect, useState } from "react";
 import { defaultHero, navItems } from "./utils/constants";
 import { HeroContext } from "./utils/context";
+import { friends } from "./utils/constants";
 
 const App = (props) => {
   const getItemByRoute = () => {
@@ -21,11 +22,13 @@ const App = (props) => {
   const routeHero = () => {
     const route = window.location.hash.substring(2);
     const routeHero = route.split("/")[1];
-
-    return routeHero ?? defaultHero;
+    if(friends.find(item => item === routeHero))
+      return routeHero
+    else
+    return defaultHero;
   };
-  const [currentPage, setCurrentPage] = useState(getItemByRoute());
   const [hero, setHero] = useState(routeHero());
+  const [currentPage, setCurrentPage] = useState(getItemByRoute());
   navItems[0].route = `home/${hero}`;
   navItems[1].route = `about_me/${hero}`;
 
@@ -35,8 +38,9 @@ const App = (props) => {
       setCurrentPage(page);
     });
   }, []);
-
+  console.log(hero);
   return (
+    
     <div className="container-fluid">
       <Header hero={hero} />
       <HeroContext.Provider
