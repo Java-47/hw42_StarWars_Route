@@ -7,8 +7,11 @@ import { defaultHero, navItems } from "./utils/constants";
 import { HeroContext } from "./utils/context";
 import { friends } from "./utils/constants";
 
+
 const App = (props) => {
   const getItemByRoute = () => {
+
+
     const route = window.location.hash.substring(2);
     const page = navItems.find((item) => item.route === route);
     const cur_page = route.split("/")[0];
@@ -22,11 +25,12 @@ const App = (props) => {
   const routeHero = () => {
     const route = window.location.hash.substring(2);
     const routeHero = route.split("/")[1];
-    if(friends.find(item => item === routeHero))
-      return routeHero
+    if(friends.find(item => item === routeHero)){
+      return routeHero;}
     else
-    return defaultHero;
+      return defaultHero;
   };
+
   const [hero, setHero] = useState(routeHero());
   const [currentPage, setCurrentPage] = useState(getItemByRoute());
   navItems[0].route = `home/${hero}`;
@@ -36,12 +40,12 @@ const App = (props) => {
     window.addEventListener("hashchange", () => {
       const page = getItemByRoute();
       setCurrentPage(page);
+      setHero(routeHero());
     });
   }, []);
-  console.log(hero);
+
   return (
-    
-    <div className="container-fluid">
+  <div className="container-fluid">
       <Header hero={hero} />
       <HeroContext.Provider
         value={{
